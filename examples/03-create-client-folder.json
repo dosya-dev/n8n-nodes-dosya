@@ -1,0 +1,112 @@
+{
+  "name": "Create a dosya.dev folder for each new client",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Create a client folder\n\nCustomer data posted to the webhook creates a folder named after the customer, e.g. `Acme Ltd (C-1042)`, inside the folder you choose. Posting the same customer again reuses the folder.\n\n**Setup**\n1. **Create Client Folder**: choose your dosya.dev API credential, a **Workspace**, and a **Parent Folder** such as \"Clients\".\n2. Activate, then test with:\n```\ncurl -X POST -H \"Content-Type: application/json\" \\\n  -d '{\"customer_id\":\"C-1042\",\"name\":\"Acme Ltd\"}' \\\n  https://YOUR-N8N/webhook/dosya-client-folder\n```\n\n**Replace Slashes With Dashes** is on, so a name like \"A/B Trading\" stays one folder.",
+        "height": 380,
+        "width": 560
+      },
+      "id": "c3f2e5d4-0003-4e3a-9c30-000000000001",
+      "name": "Setup c3f2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -380
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dosya-client-folder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c3f2e5d4-0003-4e3a-9c30-000000000002",
+      "name": "New Client",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        80
+      ],
+      "webhookId": "c3f2e5d4-0003-4e3a-9c30-0000000000aa"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "create",
+        "workspace": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "folder": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "name": "={{ $json.body.customer_id ? $json.body.name + ' (' + $json.body.customer_id + ')' : $json.body.name }}",
+        "options": {
+          "slashesInName": true
+        }
+      },
+      "id": "c3f2e5d4-0003-4e3a-9c30-000000000003",
+      "name": "Create Client Folder",
+      "type": "n8n-nodes-dosya.dosya",
+      "typeVersion": 1,
+      "position": [
+        240,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { folder_id: $json.id, folder_name: $json.name, created: $json.created } }}",
+        "options": {}
+      },
+      "id": "c3f2e5d4-0003-4e3a-9c30-000000000004",
+      "name": "Respond with Folder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        480,
+        80
+      ]
+    }
+  ],
+  "connections": {
+    "New Client": {
+      "main": [
+        [
+          {
+            "node": "Create Client Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Client Folder": {
+      "main": [
+        [
+          {
+            "node": "Respond with Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

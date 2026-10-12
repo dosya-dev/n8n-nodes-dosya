@@ -1,0 +1,68 @@
+{
+  "name": "n8n-nodes-dosya",
+  "version": "0.0.0",
+  "description": "n8n community node for dosya.dev cloud storage: upload, download and list files, create folders and share links.",
+  "license": "MIT",
+  "homepage": "https://github.com/dosya-dev/n8n-nodes-dosya#readme",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "dosya",
+    "dosya.dev",
+    "cloud storage",
+    "file storage",
+    "file sharing"
+  ],
+  "author": {
+    "name": "dosya.dev",
+    "email": "support@dosya.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dosya-dev/n8n-nodes-dosya.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dosya-dev/n8n-nodes-dosya/issues"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "test:live": "vitest run test/live"
+  },
+  "files": [
+    "dist",
+    "!dist/tsconfig.tsbuildinfo"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/DosyaApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Dosya/Dosya.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.51.5",
+    "eslint": "9.32.0",
+    "n8n-workflow": "^2.42.4",
+    "prettier": "3.6.2",
+    "release-it": "^21.1.0",
+    "typescript": "5.9.2",
+    "vitest": "^3.2.7"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

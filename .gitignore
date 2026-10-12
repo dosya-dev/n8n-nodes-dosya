@@ -1,0 +1,5 @@
+dist
+node_modules
+# npm run test:live reads its key from the environment; never keep one in a file here.
+.env
+*.tgz
